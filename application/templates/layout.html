@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ title }} Page</title>
+</head>
+<body>
+<h1>{{ title }} Page</h1>
+	{% if current_user.is_authenticated %}
+	<div class="navbar">
+		<a href="{{ url_for('home') }}">home</a>
+		<a href="{{ url_for('about') }}">about</a>
+		<a href="{{ url_for('post') }}">post</a>
+		<a href="{{ url_for('logout') }}">logout</a>
+		<a href="{{ url_for('account') }}">account</a>
+	</div>
+	{% else %}
+	<div class="navbar">
+		<a href="{{ url_for('home') }}">home</a>
+                <a href="{{ url_for('about') }}">about</a>
+                <a href="{{ url_for('login') }}">login</a>
+                <a href="{{ url_for('register') }}">register</a>	
+	</div>
+	{% endif %}
+{% block body_content %}{% endblock %}
+</body>
+</html>
+
