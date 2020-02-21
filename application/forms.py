@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import Users, Posts
+from application.models import Members, Active_cases
 from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
@@ -13,13 +13,13 @@ class RegistrationForm(FlaskForm):
 	submit = SubmitField('Sign Up')
 
 	def validate_email(self, email):
-		user = Users.query.filter_by(email=email.data).first()
+		user = Members.query.filter_by(email=email.data).first()
 		if user:
 			raise ValidationError('Email already in use')
 
-class PostForm(FlaskForm):
-	title = StringField('Title',validators = [DataRequired(),Length(min=2, max=30)])
-	content = StringField('Content',validators = [DataRequired(),Length(min=2, max=1000)])
+class CaseForm(FlaskForm):
+	Animal_name_type = StringField('Title',validators = [DataRequired(),Length(min=2, max=30)])
+	description = StringField('Content',validators = [DataRequired(),Length(min=2, max=1000)])
 	submit = SubmitField('Post!')
 
 class LoginForm(FlaskForm):
@@ -38,4 +38,4 @@ class UpdateAccountForm(FlaskForm):
 		if email.data != current_user.email:
 			user = Users.query.filter_by(email=email.data).first()
 			if user:
-				raise ValidationError('Enail already in use')
+				raise ValidationError('Email already in use')

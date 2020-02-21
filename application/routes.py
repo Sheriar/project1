@@ -1,18 +1,17 @@
 from flask import render_template, redirect, url_for, request
 from application import app, db, bcrypt
-from application.models import Posts, Users
-from application.forms import PostForm, RegistrationForm, LoginForm, UpdateAccountForm
+from application.models import Active_cases, Members
+from application.forms import CaseForm, RegistrationForm, LoginForm, UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
-	form=PostForm()
+	form=CaseForm()
 	if form.validate_on_submit():
-		postData = Posts(title = form.title.data,
-		content = form.content.data,
-		author = current_user )
-
+		postData = Active_cases(Animal_name_type = form.Animal_name_type.data,
+		Animal_description = form.description.data,
+		Member_id = current_user )
 		db.session.add(postData)
 		db.session.commit()
 		return redirect(url_for('home'))
@@ -23,7 +22,9 @@ def post():
 @app.route('/')
 @app.route('/home')
 def home():
-	postData = Posts.query.all()
+	postData = Active_cases.query.all()
+	for post in postData:
+		print(post.__dict__)
 	return render_template('home.html', title='Home', posts = postData )
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -32,7 +33,7 @@ def login():
 		return redirect(url_for('home'))
 	form = LoginForm()
 	if form.validate_on_submit():
-		user=Users.query.filter_by(email=form.email.data).first()
+		user=Members.query.filter_by(email=form.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
@@ -54,7 +55,7 @@ def register():
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-		user = Users(first_name=form.first_name.data,last_name=form.last_name.data,email = form.email.data, password = hash_pw)
+		user = Members(first_name=form.first_name.data,last_name=form.last_name.data,email = form.email.data, password = hash_pw)
 
 		db.session.add(user)
 		db.session.commit()
@@ -87,8 +88,8 @@ def account():
 @login_required
 def account_delete():
 	user = current_user.id
-	account = Users.query.filter_by(id=user).first()
-	posts = Posts.query.filter_by(user_id=user).all()
+	account = Member.query.filter_by(id=user).first()
+	posts = Active_cases.query.filter_by(user_id=user).all()
 	logout_user()
 	for post in posts:
 		db.session.delete(post)

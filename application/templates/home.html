@@ -3,10 +3,10 @@
         <p1> Welcome to my first web app </p1>
 	{% for post in posts %}
 	<div>
-	<h3>{{ post.title }}</h3>
-	<span>by<i>{{ post.author.first_name }} {{post.author.last_name }}</i></span>
+	<span>by<i>{{ post.Member_id.first_name }} {{post.Member_id.last_name }}</i></span>
 	<span>on the <i>{{ post.date_posted }}</i></span>
-	<p> -- {{ post.content }}</p>
+	<p> -- {{ post.Animal_name_type }}</p>
+	<p> {{ post.Animal_description }}</p>
 	</div>
 	{% endfor %}
 {% endblock %}
