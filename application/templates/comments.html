@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body_content %}
+	{{ form.comment  }}
+	{{ form.submit }}
+	<br>
+	<div>
+	{% for comment in comments %}
+		<h3>{{ comment.Memeber_id.first_name  }} {{ comment.Memeber_id.last_name  }}</h3>
+		<p> {{ comment.Case_ID.Animal_name_type }}</p>
+		<p> {{ comment.Case_ID.Animal_description }}</p>
+		<p>{{ comment.comments  }}</p>
+	{% endfor %}
+	</div>
+{% endblock %}
+

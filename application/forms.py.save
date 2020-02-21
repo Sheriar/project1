@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import Members, Active_cases, Comments
+from application.models import Members, Active_cases
 from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
@@ -39,7 +39,3 @@ class UpdateAccountForm(FlaskForm):
 			user = Users.query.filter_by(email=email.data).first()
 			if user:
 				raise ValidationError('Email already in use')
-class CommentForm(FlaskForm):
-	comment = StringField('Comment', validators=[DataRequired(),Length(min=4, max=500)])
-	submit = SubmitField('Submit')
-

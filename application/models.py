@@ -26,7 +26,7 @@ class Active_cases(db.Model):
 	member_id = db.Column(db.Integer, db.ForeignKey('members.id'), nullable=False)
 	Animal_name_type = db.Column(db.String(100), nullable=False, unique=True)
 	Animal_description = db.Column(db.String(1000), nullable=False, unique=True)
-	ACTIVE_CASES = db.relationship('Comments', backref='CASE_ID', lazy=True)
+	ACTIVE_CASES = db.relationship('Comments', backref='Case_ID', lazy=True)
 
 	def __repr__(self):
 		return ''.join([ 'member_id', str(self.member_id), '\r\n', 'Animal_name_type: ', self.Animal_name_type, '\r\n', self.Animal_description])
@@ -34,7 +34,7 @@ class Active_cases(db.Model):
 class Comments(db.Model, UserMixin):
 	id = db.Column(db.Integer, primary_key=True)
 	member_ID = db.Column(db.Integer, db.ForeignKey('members.id'), nullable=False)
-	Case_ID = db.Column(db.Integer, db.ForeignKey('active_cases.id'), nullable=False)
+	case_id = db.Column(db.Integer, db.ForeignKey('active_cases.id'), nullable=False)
 	comments = db.Column(db.String(1000), nullable=False)
 
 	def __repr__(self):

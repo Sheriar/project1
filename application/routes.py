@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, request
 from application import app, db, bcrypt
-from application.models import Active_cases, Members
-from application.forms import CaseForm, RegistrationForm, LoginForm, UpdateAccountForm
+from application.models import Active_cases, Members, Comments
+from application.forms import CaseForm, RegistrationForm, LoginForm, UpdateAccountForm, CommentForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/post', methods=['GET', 'POST'])
@@ -22,10 +22,24 @@ def post():
 @app.route('/')
 @app.route('/home')
 def home():
-	postData = Active_cases.query.all()
-	for post in postData:
-		print(post.__dict__)
-	return render_template('home.html', title='Home', posts = postData )
+	caseData = Active_cases.query.all()
+	return render_template('home.html', title='Home', cases=caseData )
+
+@app.route('/comments/<Case_ID>')
+@login_required
+def comment(Case_ID):
+	comment_form = CommentForm()
+	case = Active_cases.query.filter_by(id=Case_ID).first()
+	if case and comment_form.validate_on_submit():
+		comment_to_add = Comments(
+		Case_ID=case,
+		Member_id=current_user,
+		comments=comment_form.comments.data
+		)
+		db.session.add(comment_to_add)
+		db.session.commit()
+	all_comments = Comments.query.all()
+	return render_template('comments.html', title='Comments', comments=all_comments, form=comment_form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
