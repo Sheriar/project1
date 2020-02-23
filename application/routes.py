@@ -37,7 +37,7 @@ def comment(Case_ID):
 		Member_id=current_user,
 		comments=comment_form.comments.data
 		)
-		db.session.add(comment_form)
+		db.session.add(comment_to_add)
 		db.session.commit()
 	all_comments = Comments.query.all()
 	return render_template('comments.html', title='Comments', comments=all_comments, form=comment_form)
