@@ -34,7 +34,7 @@ def comment(Case_ID):
 	if case and comment_form.validate_on_submit():
 		comment_to_add = Comments(
 		case_id=case,
-		member_ID=current_user,
+		member_ID=current_user.id,
 		comments=comment_form.comment.data
 		)
 		db.session.add(comment_to_add)
@@ -70,7 +70,7 @@ def register():
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-		user = Members(first_name=form.first_name.data,last_name=form.last_name.data,email = form.email.data, password = hash_pw)
+		user = Members(first_name=form.first_name.data,last_name=form.last_name.data,email = form.email.data, password = hash_pw).first()
 
 		db.session.add(user)
 		db.session.commit()
