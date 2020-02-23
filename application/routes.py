@@ -33,9 +33,9 @@ def comment(Case_ID):
 	case = Active_cases.query.filter_by(id=Case_ID).first()
 	if case and comment_form.validate_on_submit():
 		comment_to_add = Comments(
-		Case_ID=case,
-		Member_id=current_user,
-		comments=comment_form.comments.data
+		case_id=case,
+		member_ID=current_user,
+		comments=comment_form.comment.data
 		)
 		db.session.add(comment_to_add)
 		db.session.commit()
