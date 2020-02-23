@@ -33,7 +33,7 @@ def comment(Case_ID):
 	case = Active_cases.query.filter_by(id=Case_ID).first()
 	if case and comment_form.validate_on_submit():
 		comment_to_add = Comments(
-		case_id=case,
+		case_id=case.id,
 		member_ID=current_user.id,
 		comments=comment_form.comment.data
 		)
