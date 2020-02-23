@@ -113,13 +113,10 @@ def account_delete():
 	db.session.commit()
 	return redirect(url_for('register'))
 
-#@app.route('/post/delete/<Case_ID>', methods=["GET", "POST"])
-#@login_required
-#def case_delete(Case_ID):
-#	form=CaseForm()
-#	user = current_user.id
-#	Case_ID = case 
-#	case = Active_cases.query.filter_by(Case_ID).first()
-#	db.session.delete(case)
-#	db.session.commit()
-#	return redirect (url_for('home'))
+@app.route('/comment/delete/<id>', methods=["GET", "POST"])
+@login_required
+def comment_delete_by_id(id):
+	comment = Comments.query.filter_by(id=id).first()
+	db.session.delete(comment)
+	db.session.commit()
+	return redirect(url_for('home'))
