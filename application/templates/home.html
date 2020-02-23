@@ -7,7 +7,7 @@
 	<span>on the <i>{{ case.date_posted }}</i></span>
 	<p> -- {{ case.Animal_name_type }}</p>
 	<p> {{ case.Animal_description }}</p>
-	<a href="{{ url_for('comment', Case_ID='case.id' ) }}">Add a comment</a>
+	<a href="{{ url_for('comment', Case_ID=case.id ) }}">Add a comment</a>
 	</div>
 	{% endfor %}
 {% endblock %}
