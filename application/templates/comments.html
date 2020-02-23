@@ -13,7 +13,7 @@
 	<br>
 	<div>
 	{% for comment in comments %}
-		<h3>{{ comment.Memeber_id.first_name  }} {{ comment.Memeber_id.last_name  }}</h3>
+		<h3>{{ comment.Member_id.first_name  }} {{ comment.Member_id.last_name  }}</h3>
 		<p> {{ comment.Case_ID.Animal_name_type }}</p>
 		<p> {{ comment.Case_ID.Animal_description }}</p>
 		<p>{{ comment.comments  }}</p>
