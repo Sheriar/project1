@@ -1,3 +1,4 @@
+
 from flask import render_template, redirect, url_for, request
 from application import app, db, bcrypt
 from application.models import Active_cases, Members, Comments
@@ -25,7 +26,7 @@ def home():
 	caseData = Active_cases.query.all()
 	return render_template('home.html', title='Home', cases=caseData )
 
-@app.route('/comments/<Case_ID>')
+@app.route('/comments/<Case_ID>', methods=['GET', 'POST'])
 @login_required
 def comment(Case_ID):
 	comment_form = CommentForm()
@@ -36,7 +37,7 @@ def comment(Case_ID):
 		Member_id=current_user,
 		comments=comment_form.comments.data
 		)
-		db.session.add(comment_to_add)
+		db.session.add(comment_form)
 		db.session.commit()
 	all_comments = Comments.query.all()
 	return render_template('comments.html', title='Comments', comments=all_comments, form=comment_form)
@@ -98,12 +99,13 @@ def account():
 		db.session.add(current_user)
 		db.session.commit()
 	return render_template('account.html', title='Account', form=form)
+
 @app.route("/account/delete", methods=["GET", "POST"])
 @login_required
 def account_delete():
 	user = current_user.id
-	account = Member.query.filter_by(id=user).first()
-	posts = Active_cases.query.filter_by(user_id=user).all()
+	account = Members.query.filter_by(id=user).first()
+	posts = Active_cases.query.filter_by(member_id=user).all()
 	logout_user()
 	for post in posts:
 		db.session.delete(post)
@@ -111,3 +113,13 @@ def account_delete():
 	db.session.commit()
 	return redirect(url_for('register'))
 
+#@app.route('/post/delete/<Case_ID>', methods=["GET", "POST"])
+#@login_required
+#def case_delete(Case_ID):
+#	form=CaseForm()
+#	user = current_user.id
+#	Case_ID = case 
+#	case = Active_cases.query.filter_by(Case_ID).first()
+#	db.session.delete(case)
+#	db.session.commit()
+#	return redirect (url_for('home'))

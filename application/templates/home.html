@@ -7,7 +7,7 @@
 	<span>on the <i>{{ case.date_posted }}</i></span>
 	<p> -- {{ case.Animal_name_type }}</p>
 	<p> {{ case.Animal_description }}</p>
-	<form action="{{ url_for('comment', Case_ID=case.id ) }}">     
+	<form action="{{ url_for('comment', Case_ID='case.id' ) }}">     
                 <button type="submit">Add a comment</button>
         </form>
 	</div>

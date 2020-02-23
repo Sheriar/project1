@@ -38,5 +38,5 @@ class Comments(db.Model, UserMixin):
 	comments = db.Column(db.String(1000), nullable=False)
 
 	def __repr__(self):
-		return '',join([ 'MemberID: ', str(self.member_ID), '\r\n ', 'CASE_ID: ', self.Case_ID, '\r\n', 'Comment: ', self.comments])
+		return '',join([ 'MemberID: ', str(self.member_ID), '\r\n ', 'CASE_ID: ', self.case_id, '\r\n', 'Comment: ', self.comments])
 
