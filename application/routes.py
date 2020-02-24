@@ -30,7 +30,8 @@ def home():
 @login_required
 def comments():
 	comment_form=CommentForm
-	return render_template('comments.html', title='Comments_all', form=comment_form)
+	case = Active_cases.query.all
+	return render_template('comments.html', title='Comments_all',comments=all_comments, form=comment_form)
 
 
 @app.route('/comments/<Case_ID>', methods=['GET', 'POST'])
