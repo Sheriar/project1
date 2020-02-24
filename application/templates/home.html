@@ -1,11 +1,13 @@
 {% extends "layout.html" %}
 {% block body_content %}
-        <p1> Welcome to my first web app! </p1>
+        <p1> Welcome to LOST AND FOUND </p1>
 	{% for case in cases %}
 	<div>
 	<span>by<i>{{ case.Member_id.first_name }} {{case.Member_id.last_name }}</i></span>
 	<span>on the <i>{{ case.date_posted }}</i></span>
+	<h4> Lost </h4>
 	<p> -- {{ case.Animal_name_type }}</p>
+	<h4> Description </h4>
 	<p> {{ case.Animal_description }}</p>
 	<a href="{{ url_for('comment', Case_ID=case.id ) }}">Add a comment</a>
 	</div>
