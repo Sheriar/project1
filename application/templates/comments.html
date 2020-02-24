@@ -19,6 +19,7 @@
 		<p> {{ comment.Case_ID.Animal_name_type }}</p>
 		<h4> Description </h4>
 		<p> {{ comment.Case_ID.Animal_description }}</p>
+		<h4> Comment Made </h4>
 		<p>{{ comment.comments  }}</p>
 		<a href="{{ url_for('comment_delete_by_id', id=comment.id) }}">Delete Comment</a>
 	{% endfor %}
