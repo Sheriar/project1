@@ -26,6 +26,13 @@ def home():
 	caseData = Active_cases.query.all()
 	return render_template('home.html', title='Home', cases=caseData )
 
+@app.route('/comments', methods=['GET', 'POST'])
+@login_required
+def comments():
+	comment_form=CommentForm
+	return render_template('comments.html', title='Comments_all', form=comment_form)
+
+
 @app.route('/comments/<Case_ID>', methods=['GET', 'POST'])
 @login_required
 def comment(Case_ID):
