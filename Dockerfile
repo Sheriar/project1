@@ -1,8 +1,8 @@
 FROM python
 WORKDIR /app
-COPY . .
+COPY requirements.txt .
 EXPOSE 5000
 RUN pip install -r requirements.txt
-ENTRYPOINT['usr/bin/python','app.py']
-
+ENTRYPOINT ["/usr/local/bin/python", "app.py"]
+COPY . .
 
