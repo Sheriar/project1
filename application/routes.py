@@ -1,18 +1,18 @@
+
 from flask import render_template, redirect, url_for, request
 from application import app, db, bcrypt
-from application.models import Posts, Users
-from application.forms import PostForm, RegistrationForm, LoginForm, UpdateAccountForm
+from application.models import Active_cases, Members, Comments
+from application.forms import CaseForm, RegistrationForm, LoginForm, UpdateAccountForm, CommentForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
-	form=PostForm()
+	form=CaseForm()
 	if form.validate_on_submit():
-		postData = Posts(title = form.title.data,
-		content = form.content.data,
-		author = current_user )
-
+		postData = Active_cases(Animal_name_type = form.Animal_name_type.data,
+		Animal_description = form.description.data,
+		Member_id = current_user )
 		db.session.add(postData)
 		db.session.commit()
 		return redirect(url_for('home'))
@@ -23,8 +23,32 @@ def post():
 @app.route('/')
 @app.route('/home')
 def home():
-	postData = Posts.query.all()
-	return render_template('home.html', title='Home', posts = postData )
+	caseData = Active_cases.query.all()
+	return render_template('home.html', title='Home', cases=caseData )
+
+@app.route('/comments', methods=['GET', 'POST'])
+@login_required
+def comments():
+	comment_form=CommentForm
+	all_case = Active_cases.query.all
+	return render_template('comments.html', title='Comments_all',comments=all_case, form=comment_form)
+
+
+@app.route('/comments/<Case_ID>', methods=['GET', 'POST'])
+@login_required
+def comment(Case_ID):
+	comment_form = CommentForm()
+	case = Active_cases.query.filter_by(id=Case_ID).first()
+	if case and comment_form.validate_on_submit():
+		comment_to_add = Comments(
+		case_id=case.id,
+		member_ID=current_user.id,
+		comments=comment_form.comment.data
+		)
+		db.session.add(comment_to_add)
+		db.session.commit()
+	all_comments = Comments.query.all()
+	return render_template('comments.html', title='Comments', comments=all_comments, form=comment_form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -32,7 +56,7 @@ def login():
 		return redirect(url_for('home'))
 	form = LoginForm()
 	if form.validate_on_submit():
-		user=Users.query.filter_by(email=form.email.data).first()
+		user=Members.query.filter_by(email=form.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
@@ -54,7 +78,7 @@ def register():
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-		user = Users(first_name=form.first_name.data,last_name=form.last_name.data,email = form.email.data, password = hash_pw)
+		user = Members(first_name=form.first_name.data,last_name=form.last_name.data,email = form.email.data, password = hash_pw)
 
 		db.session.add(user)
 		db.session.commit()
@@ -83,12 +107,13 @@ def account():
 		db.session.add(current_user)
 		db.session.commit()
 	return render_template('account.html', title='Account', form=form)
+
 @app.route("/account/delete", methods=["GET", "POST"])
 @login_required
 def account_delete():
 	user = current_user.id
-	account = Users.query.filter_by(id=user).first()
-	posts = Posts.query.filter_by(user_id=user).all()
+	account = Members.query.filter_by(id=user).first()
+	posts = Active_cases.query.filter_by(member_id=user).all()
 	logout_user()
 	for post in posts:
 		db.session.delete(post)
@@ -96,3 +121,10 @@ def account_delete():
 	db.session.commit()
 	return redirect(url_for('register'))
 
+@app.route('/comment/delete/<id>', methods=["GET", "POST"])
+@login_required
+def comment_delete_by_id(id):
+	comment = Comments.query.filter_by(id=id).first()
+	db.session.delete(comment)
+	db.session.commit()
+	return redirect(url_for('home'))
