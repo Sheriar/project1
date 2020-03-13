@@ -1,21 +1,19 @@
+
 from flask import render_template, redirect, url_for, request
 from application import app, db, bcrypt
-from application.models import Members, Profile, Comments
-from application.forms import ProfileForm, RegistrationForm, LoginForm, UpdateAccountForm, CommentForm
+from application.models import Active_cases, Members, Comments
+from application.forms import CaseForm, RegistrationForm, LoginForm, UpdateAccountForm, CommentForm
 from flask_login import login_user, current_user, logout_user, login_required
-from sqlalchemy import func
-import random
-import string
 
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
-	form=ProfileForm()
+	form=CaseForm()
 	if form.validate_on_submit():
-		profileData = Profile(Personality = form.Personality.data,
-		Desired_qualities = form.Desired_qualities.data,
-		members_id = current_user )
-		db.session.add(profileData)
+		postData = Active_cases(Animal_name_type = form.Animal_name_type.data,
+		Animal_description = form.description.data,
+		Member_id = current_user )
+		db.session.add(postData)
 		db.session.commit()
 		return redirect(url_for('home'))
 	else:
@@ -25,37 +23,27 @@ def post():
 @app.route('/')
 @app.route('/home')
 def home():
-	profileData = Profile.query.all()
-	return render_template('home.html', title='Home', profiles=profileData )
-
-@app.route('/places')
-def places():
-	return render_template('places.html', title='Places')
-
-@app.route('/random1')
-def randdd():
-	random_letter = Profile.query.order_by(func.random()).id=profile.id()
-	return render_template('random1.html', title='random1', rand=random_letter)
-
+	caseData = Active_cases.query.all()
+	return render_template('home.html', title='Home', cases=caseData )
 
 @app.route('/comments', methods=['GET', 'POST'])
 @login_required
 def comments():
 	comment_form=CommentForm
-	all_case = ProfileForm.query.all
+	all_case = Active_cases.query.all
 	return render_template('comments.html', title='Comments_all',comments=all_case, form=comment_form)
 
 
-@app.route('/comments/<Profile_ID>', methods=['GET', 'POST'])
+@app.route('/comments/<Case_ID>', methods=['GET', 'POST'])
 @login_required
-def comment(Profile_ID):
+def comment(Case_ID):
 	comment_form = CommentForm()
-	profile = Profile.query.filter_by(id=Profile_ID).first()
-	if profile and comment_form.validate_on_submit():
+	case = Active_cases.query.filter_by(id=Case_ID).first()
+	if case and comment_form.validate_on_submit():
 		comment_to_add = Comments(
-		member_ID = current_user.id,
-		Profile_id = profile.id,
-		comments = comment_form.comment.data
+		case_id=case.id,
+		member_ID=current_user.id,
+		comments=comment_form.comment.data
 		)
 		db.session.add(comment_to_add)
 		db.session.commit()
@@ -125,10 +113,10 @@ def account():
 def account_delete():
 	user = current_user.id
 	account = Members.query.filter_by(id=user).first()
-	posts = ProfileForm.query.filter_by(member_id=user).all()
+	posts = Active_cases.query.filter_by(member_id=user).all()
 	logout_user()
-	for profile in profiles:
-		db.session.delete(profile)
+	for post in posts:
+		db.session.delete(post)
 	db.session.delete(account)
 	db.session.commit()
 	return redirect(url_for('register'))

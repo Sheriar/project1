@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import Members, Active_cases, Comments
+from application.models import Members, Profile, Comments
 from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
@@ -17,9 +17,9 @@ class RegistrationForm(FlaskForm):
 		if user:
 			raise ValidationError('Email already in use')
 
-class CaseForm(FlaskForm):
-	Animal_name_type = StringField('Title',validators = [DataRequired(),Length(min=2, max=30)])
-	description = StringField('Content',validators = [DataRequired(),Length(min=2, max=1000)])
+class ProfileForm(FlaskForm):
+	Personality = StringField('Personility',validators = [DataRequired(),Length(min=2, max=1000)])
+	Desired_qualities = StringField('Desirables',validators = [DataRequired(),Length(min=2, max=1000)])
 	submit = SubmitField('Post!')
 
 class LoginForm(FlaskForm):

@@ -15,10 +15,10 @@
 	{% for comment in comments %}
 		<h4> Member Name </h4>
 		<h3>{{ comment.Member_id.first_name  }} {{ comment.Member_id.last_name  }}</h3>
-		<h4> Lost Animal </h4>
-		<p> {{ comment.Case_ID.Animal_name_type }}</p>
-		<h4> Description </h4>
-		<p> {{ comment.Case_ID.Animal_description }}</p>
+		<h4> Personality </h4>
+		<p> {{ comment.Profile_ID.Personality }}</p>
+		<h4> Desired_qualities </h4>
+		<p> {{ comment.Profile_ID.Desired_qualities }}</p>
 		<h4> Comment Made </h4>
 		<p>{{ comment.comments  }}</p>
 		<a href="{{ url_for('comment_delete_by_id', id=comment.id) }}">Delete Comment</a>

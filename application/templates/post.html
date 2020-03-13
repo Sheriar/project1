@@ -3,21 +3,21 @@
 	<div class='form'>
 		<form method='POST' action=''>
 			{{ form.hidden_tag() }}
-                        {{ form.Animal_name_type.label }}
-                        {{ form.Animal_name_type }}
-			{% if form.Animal_name_type.errors %}
+                        {{ form.Personality.label }}
+                        {{ form.Personality }}
+			{% if form.Personality.errors %}
                                 <div class="error">
-                                        {% for error in form.Animal_name_typet.errors %}
+                                        {% for error in form.Personality.errors %}
                                                 <span>{{ error }}</span>
                                         {% endfor %}
                                 </div>
                         {% endif %}
 			<br>
-                        {{ form.description.label }}
-                        {{ form.description }}
-			{% if form.description.errors %}
+                        {{ form.Desired_qualities.label }}
+                        {{ form.Desired_qualities }}
+			{% if form.Desired_qualities.errors %}
                                 <div class="error">
-                                        {% for error in form.description.errors %}
+                                        {% for error in form.Desired_qualities.errors %}
                                                 <span>{{ error }}</span>
                                         {% endfor %}
                                 </div>

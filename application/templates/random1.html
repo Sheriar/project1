@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body_content %}
+	{% for rand in random_letter %}
+		<h3> Member name </h3>
+		<h4> {{ form.Member_id.first_name }} {{ form.Member_id.last_name }} </h4>
+		<h4> Personality </h4>
+                <p> {{ comment.Profile_ID.Personality }}</p>
+                <h4> Desired_qualities </h4>
+                <p> {{ comment.Profile_ID.Desired_qualities }}</p>
+	{% endfor %}		
+{% endblock %}
+
+
+
+

@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 {% block body_content %}
-        <p1> Welcome to LOST AND FOUND </p1>
-	{% for case in cases %}
+        <p1> Welcome to the the last site you will ever need to visit to find your perfect partner </p1><br>
+	{% for profile in profiles %}
 	<div>
-	<span>by<i>{{ case.Member_id.first_name }} {{case.Member_id.last_name }}</i></span>
-	<span>on the <i>{{ case.date_posted }}</i></span>
-	<h4> Lost </h4>
-	<p> -- {{ case.Animal_name_type }}</p>
-	<h4> Description </h4>
-	<p> {{ case.Animal_description }}</p>
-	<a href="{{ url_for('comment', Case_ID=case.id ) }}">Add a comment</a>
+	<span>by<i>{{ profile.members_id.first_name }} {{profile.members_id.last_name }}</i></span>
+	<span>on the <i>{{ profile.date_posted }}</i></span>
+	<h4> Personality </h4>
+	<p> -- {{ profile.Personality }}</p>
+	<h4> Desired Qualities </h4>
+	<p> {{ profile.Desired_qualities }}</p>
+	<a href="{{ url_for('comment', Profile_ID=profile.id ) }}">Add a comment</a>
 	</div>
 	{% endfor %}
 {% endblock %}
